@@ -21,9 +21,9 @@ app.get('/', (req, res) => {
 
 // Routes (will add later)
 app.use('/api/auth', require('./routes/authRoutes'));
-// app.use('/api/patients', require('./routes/patientRoutes'));
-// app.use('/api/doctors', require('./routes/doctorRoutes'));
-// app.use('/api/appointments', require('./routes/appointmentRoutes'));
+app.use('/api/patients', require('./routes/patientRoutes'));
+app.use('/api/doctors', require('./routes/doctorRoutes'));
+// app.use('/api/appointments', require('./routes/appointmentRoutes')); // Sprint 4
 
 const PORT = process.env.PORT || 5000;
 
