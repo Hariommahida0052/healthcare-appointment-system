@@ -3,6 +3,8 @@ const Appointment = require('../models/Appointment');
 const Payment = require('../models/Payment');
 const DoctorProfile = require('../models/DoctorProfile');
 const User = require('../models/User');
+const { sendConfirmationEmail } = require('../utils/sendEmail');
+const { sendBookingConfirmedSMS } = require('../utils/sendSMS');
 
 // ─────────────────────────────────────────────────────────
 // @route   POST /api/payments/create-session
@@ -151,6 +153,34 @@ const stripeWebhook = async (req, res) => {
           stripePaymentIntentId: session.payment_intent,
         }
       );
+
+      // Fetch appointment details for notification
+      const appointment = await Appointment.findById(appointmentId)
+        .populate('patient', 'fullName email phone')
+        .populate('doctor', 'fullName');
+
+      // Send confirmation email to patient
+      if (appointment?.patient?.email) {
+        await sendConfirmationEmail({
+          patientEmail: appointment.patient.email,
+          patientName: appointment.patient.fullName,
+          doctorName: appointment.doctor.fullName,
+          date: appointment.date,
+          timeSlot: appointment.timeSlot,
+          type: appointment.type,
+          videoRoomId: appointment.videoRoomId,
+        });
+      }
+
+      // Send confirmation SMS to patient
+      if (appointment?.patient?.phone) {
+        await sendBookingConfirmedSMS(
+          appointment.patient.phone,
+          appointment.doctor.fullName,
+          appointment.date,
+          appointment.timeSlot
+        );
+      }
 
       console.log(`✅ Payment successful for appointment: ${appointmentId}`);
 
