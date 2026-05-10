@@ -1,122 +1,137 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Pages — Public
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+
+// Pages — Patient
+import PatientDashboard from './pages/patient/PatientDashboard';
+import DoctorsPage from './pages/patient/DoctorsPage';
+import DoctorProfilePage from './pages/patient/DoctorProfilePage';
+import BookAppointmentPage from './pages/patient/BookAppointmentPage';
+import MyAppointmentsPage from './pages/patient/MyAppointmentsPage';
+import PatientProfilePage from './pages/patient/PatientProfilePage';
+import PaymentSuccessPage from './pages/patient/PaymentSuccessPage';
+
+// Pages — Doctor
+import DoctorDashboard from './pages/doctor/DoctorDashboard';
+import DoctorAppointmentsPage from './pages/doctor/DoctorAppointmentsPage';
+import DoctorProfileEditPage from './pages/doctor/DoctorProfileEditPage';
+import AvailabilityPage from './pages/doctor/AvailabilityPage';
+
+// Pages — Admin
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDoctorsPage from './pages/admin/AdminDoctorsPage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
+import AdminAppointmentsPage from './pages/admin/AdminAppointmentsPage';
+
+// Shared
+import ConsultationPage from './pages/ConsultationPage';
+import NotFoundPage from './pages/NotFoundPage';
+
+// Layout
+import Navbar from './components/layout/Navbar';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <AuthProvider>
+        <Navbar />
+        <Routes>
+          {/* ── Public Routes ─────────────────────────── */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
-      <div className="ticks"></div>
+          {/* ── Patient Routes ────────────────────────── */}
+          <Route path="/patient/dashboard" element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <PatientDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctors" element={<DoctorsPage />} />
+          <Route path="/doctors/:id" element={<DoctorProfilePage />} />
+          <Route path="/book/:doctorId" element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <BookAppointmentPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/patient/appointments" element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <MyAppointmentsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/patient/profile" element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <PatientProfilePage />
+            </ProtectedRoute>
+          } />
+          <Route path="/payment-success" element={
+            <ProtectedRoute allowedRoles={['patient']}>
+              <PaymentSuccessPage />
+            </ProtectedRoute>
+          } />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* ── Doctor Routes ─────────────────────────── */}
+          <Route path="/doctor/dashboard" element={
+            <ProtectedRoute allowedRoles={['doctor']}>
+              <DoctorDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/appointments" element={
+            <ProtectedRoute allowedRoles={['doctor']}>
+              <DoctorAppointmentsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/profile" element={
+            <ProtectedRoute allowedRoles={['doctor']}>
+              <DoctorProfileEditPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctor/availability" element={
+            <ProtectedRoute allowedRoles={['doctor']}>
+              <AvailabilityPage />
+            </ProtectedRoute>
+          } />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          {/* ── Admin Routes ──────────────────────────── */}
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/doctors" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDoctorsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminUsersPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/appointments" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminAppointmentsPage />
+            </ProtectedRoute>
+          } />
+
+          {/* ── Shared ───────────────────────────────── */}
+          <Route path="/consultation/:roomId" element={
+            <ProtectedRoute allowedRoles={['patient', 'doctor']}>
+              <ConsultationPage />
+            </ProtectedRoute>
+          } />
+
+          {/* ── Fallback ─────────────────────────────── */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
