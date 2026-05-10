@@ -1,0 +1,72 @@
+.profile-edit-page {
+  padding-top: 100px;
+  padding-bottom: 60px;
+}
+
+.profile-header-edit {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.avatar-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.avatar-preview-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 30px;
+  background: var(--gradient-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border: 4px solid var(--bg-elevated);
+  box-shadow: var(--shadow-lg);
+}
+
+.avatar-preview-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.avatar-preview-large:hover .camera-overlay {
+  opacity: 1;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
+textarea.form-input {
+  resize: vertical;
+}

@@ -1,0 +1,117 @@
+.appointments-page {
+  padding-top: 100px;
+  padding-bottom: 60px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.filter-tabs {
+  display: flex;
+  background: var(--bg-surface);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.filter-tab {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.appointments-grid-detailed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.appointment-card-detailed {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.appointment-card-detailed:hover {
+  border-color: var(--border-active);
+  transform: translateY(-5px);
+}
+
+.appt-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.appt-doc-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.status-badge.confirmed { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.status-badge.pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.status-badge.cancelled { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+.appt-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.appt-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.appt-info-item svg {
+  color: var(--primary-light);
+}
+
+.wait-msg { font-size: 13px; color: var(--warning); text-align: center; font-style: italic; }
+.cancel-msg { font-size: 13px; color: var(--danger); text-align: center; }
+
+.empty-state-full {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 0;
+}
+
+@media (max-width: 600px) {
+  .page-header { flex-direction: column; align-items: flex-start; }
+  .filter-tabs { width: 100%; overflow-x: auto; }
+}
